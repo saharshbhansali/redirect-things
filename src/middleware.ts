@@ -6,7 +6,7 @@ export default async function middleware(request: NextRequest) {
 
   console.log("hostname", host);
 
-  if (host === "volt.place") {
+  if (host === "www.volt.place") {
     return NextResponse.redirect("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
   }
 
