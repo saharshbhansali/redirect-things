@@ -1,31 +1,42 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export default async function middleware(request: NextRequest) {
-  const host = request.nextUrl.host;
+const hostRedirectMap: { [key: string]: string } = {
+  "resume.saharshbhansali.dev": "https://saharshbhansali.github.io/about-me/resume.pdf",
+  // Add more host-URL mappings here
+};
 
-  const response = new NextResponse(`<html>
-  <head>
-    <title>Redirecting...</title>
-    <link rel="canonical" href="https://saharshbhansali.github.io/about-me/resume.pdf" />
-    <meta charset="utf-8" />
-    <meta http-equiv="refresh" content="0; url=https://saharshbhansali.github.io/about-me/resume.pdf" />
-  </head>
-  <body>
-    <p>Redirecting...</p>
-  </body>
-</html>
-`);
+function createRedirectResponse(url: string): NextResponse {
+  return new NextResponse(`<html>
+    <head>
+      <title>Redirecting...</title>
+      <link rel="canonical" href="${url}" />
+      <meta charset="utf-8" />
+      <meta http-equiv="refresh" content="0; url=${url}" />
+    </head>
+    <body>
+      <p>Redirecting...</p>
+    </body>
+  </html>`, {
+    headers: {
+      'Content-Type': 'text/html; charset=utf-8'
+    }
+  });
+}
 
-  response.headers.set('Content-Type', 'text/html; charset=utf-8');
+export default async function middleware(request: NextRequest){
+  const host = request.headers.get('host');
 
   console.log("hostname", host);
 
-  if (host === "resume.saharshbhansali.dev") {
-    return response;
+  if (host && hostRedirectMap[host]) {
+    return createRedirectResponse(hostRedirectMap[host]);
   }
 
+  // Handle cases where the host is not found in the mapping
+  return new NextResponse('Not Found', { status: 404 });
 }
+
 
 export const config = {
   matcher: [
