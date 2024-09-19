@@ -24,7 +24,7 @@ function createRedirectResponse(url: string): NextResponse {
   });
 }
 
-export default async function middleware(request: NextRequest){
+export default async function middleware(request: Request){
   const host = request.headers.get('host');
 
   console.log("hostname", host);
@@ -34,7 +34,7 @@ export default async function middleware(request: NextRequest){
   }
 
   // Handle cases where the host is not found in the mapping
-  return new NextResponse('Not Found', { status: 404 });
+  // return new NextResponse('Not Found', { status: 404 });
 }
 
 
