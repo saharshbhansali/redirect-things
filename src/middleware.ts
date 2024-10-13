@@ -1,28 +1,33 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+function createRedirectResponse(url: string): NextResponse {
+
+  return NextResponse.redirect(
+    url,
+  );
+  // const response = new NextResponse(`<html>
+  //   <head>
+  //     <title>Redirecting...</title>
+  //     <link rel="canonical" href="${url}" />
+  //     <meta charset="utf-8" />
+  //     <meta http-equiv="refresh" content="0; url=${url}" />
+  //   </head>
+  //   <body>
+  //     <p>Redirecting...</p>
+  //   </body>
+  // </html>`, {
+  //   headers: {
+  //     'Content-Type': 'text/html; charset=utf-8'
+  //   }
+  // });
+  // return response;
+}
+
 const hostRedirectMap: { [key: string]: string } = {
   "resume.saharshbhansali.dev": "https://saharshbhansali.github.io/about-me/resume.pdf",
   // Add more host-URL mappings here
 };
-
-function createRedirectResponse(url: string): NextResponse {
-  return new NextResponse(`<html>
-    <head>
-      <title>Redirecting...</title>
-      <link rel="canonical" href="${url}" />
-      <meta charset="utf-8" />
-      <meta http-equiv="refresh" content="0; url=${url}" />
-    </head>
-    <body>
-      <p>Redirecting...</p>
-    </body>
-  </html>`, {
-    headers: {
-      'Content-Type': 'text/html; charset=utf-8'
-    }
-  });
-}
 
 export default async function middleware(request: Request){
   const host = request.headers.get('host');
