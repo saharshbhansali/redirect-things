@@ -3,25 +3,28 @@ import type { NextRequest } from "next/server";
 
 function createRedirectResponse(url: string): NextResponse {
 
-  return NextResponse.redirect(
-    url,
-  );
-  // const response = new NextResponse(`<html>
-  //   <head>
-  //     <title>Redirecting...</title>
-  //     <link rel="canonical" href="${url}" />
-  //     <meta charset="utf-8" />
-  //     <meta http-equiv="refresh" content="0; url=${url}" />
-  //   </head>
-  //   <body>
-  //     <p>Redirecting...</p>
-  //   </body>
-  // </html>`, {
-  //   headers: {
-  //     'Content-Type': 'text/html; charset=utf-8'
-  //   }
-  // });
-  // return response;
+  const htmlContent = `<html>
+    <head>
+      <title>Redirecting...</title>
+      <link rel="canonical" href="${url}" />
+      <meta charset="utf-8" />
+      <meta http-equiv="refresh" content="0; url=${url}" />
+    </head>
+    <body>
+      <p>Redirecting...</p>
+    </body>
+  </html>`;
+
+  const response = new NextResponse(htmlContent, {
+    headers: {
+      'Content-Type': 'text/html; charset=utf-8',
+      'Location': url
+    },
+    status: 302
+  });
+
+  return response;
+  
 }
 
 const hostRedirectMap: { [key: string]: string } = {
