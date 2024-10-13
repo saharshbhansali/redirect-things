@@ -11,7 +11,11 @@ export default async function middleware(request: NextRequest) {
       "https://saharshbhansali.github.io/about-me/resume.pdf",
     );
   }
-
+  if (host === "my-resume.saharshbhansali.dev") {
+    return NextResponse.redirect(
+      "https://saharshbhansali.github.io/about-me/resume.pdf",
+    );
+  }
   return NextResponse.next();
 }
 
